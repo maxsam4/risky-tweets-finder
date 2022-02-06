@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <link rel="prefetch" href="list.txt">
         <title>Risky Tweets</title>
         <meta name="description" content="Find risky tweets that you might have posted when you were naive. Save yourself from being cancelled.">
         <style>
@@ -16,6 +17,10 @@
             li {
                 list-style: none;
             }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
         </style>
     </head>
     <body>
@@ -27,6 +32,9 @@
         </form>
         <ul>
         </ul>
+        <figure>
+            <img src="twitter.webp" alt="Twitter">
+        </figure>
         <footer>
             <p>Contribute by submitting PRs on <a href="https://github.com/maxsam4/risky-tweets-finder">GitHub</a></p>
             <p>Created by <a href="https://mudit.blog/" title="Mudit Gupta">Mudit Gupta</a></p>
@@ -51,6 +59,7 @@
                                 let innerElement = document.createElement('a');
                                 innerElement.href = baseUrl + words + extraParams;
                                 innerElement.target = "_blank";
+                                innerElement.rel = "noopener noreferrer";
                                 innerElement.innerHTML = "Click here to open Search #" + n + " on Twitter";
                                 listNode.appendChild(innerElement);
                                 document.querySelector('ul').appendChild(listNode);
@@ -64,6 +73,7 @@
                             let innerElement = document.createElement('a');
                             innerElement.href = baseUrl + words + extraParams;
                             innerElement.target = "_blank";
+                            innerElement.rel = "noopener noreferrer";
                             innerElement.innerHTML = "Click here to open Search #" + n + " on Twitter";
                             listNode.appendChild(innerElement);
                             document.querySelector('ul').appendChild(listNode);
