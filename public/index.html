@@ -2,10 +2,76 @@
 <html>
     <head>
         <link rel="icon" type="image/x-icon" href="favicon.ico">
-        <title>Hello</title>
-        <meta name="description" content="Hello">
+        <title>Risky Tweets</title>
+        <meta name="description" content="Find risky tweets that you might have posted when you were naive. Save yourself from being cancelled.">
+        <style>
+            body {
+                text-align: center;
+                height: 95vh;
+                display: flex;
+                flex-direction: column;
+            }
+            footer {
+                margin-top: auto;
+            }
+            li {
+                list-style: none;
+            }
+        </style>
     </head>
     <body>
-        <h1>Hello World</h1>
+        <h1>Risky Tweets Finder</h1>
+        <form onsubmit="return brrr(this);" class="main">
+            <label for="handle">Enter Your Twitter Handle:</label>
+            <input type="text" id="handle" name="handle" value="jack">
+            <input type="submit" value="Submit" />
+        </form>
+        <ul>
+        </ul>
+        <footer>
+            <p>Contribute by submitting PRs on <a href="https://github.com/maxsam4/risky-tweets-finder">GitHub</a>.</p>
+            <p>Created by <a href="https://mudit.blog/" title="Mudit Gupta">Mudit Gupta</a>.</p>
+        </footer>
+        <script>
+            function brrr(data) {
+                document.querySelector('ul').innerHTML = "";
+                const baseUrl = "https://twitter.com/search?q=from:" + data.handle.value;
+                const extraParams = "&src=typed_query&f=top";
+                let words = "";
+                let n = 1;
+                fetch('list.txt')
+                    .then(response => response.text()) 
+                    .then(listString => listString.split(/\r?\n/)) 
+                    .then(list => {
+                        for (const word of list) {
+                            words +=  " " + word + " OR";
+                            // Have to split in chunk because twitter has a max limit of 500 chars per query.
+                            if (words.length > 400) {
+                                words = words.substring(0, words.length - 3);
+                                let listNode = document.createElement('li');
+                                let innerElement = document.createElement('a');
+                                innerElement.href = baseUrl + words + extraParams;
+                                innerElement.target = "_blank";
+                                innerElement.innerHTML = "Click here to open Search #" + n + " on Twitter";
+                                listNode.appendChild(innerElement);
+                                document.querySelector('ul').appendChild(listNode);
+                                words = "";
+                                n++;
+                            }
+                        }
+                        if (words.length > 3) {
+                            words = words.substring(0, words.length - 3);
+                            let listNode = document.createElement('li');
+                            let innerElement = document.createElement('a');
+                            innerElement.href = baseUrl + words + extraParams;
+                            innerElement.target = "_blank";
+                            innerElement.innerHTML = "Click here to open Search #" + n + " on Twitter";
+                            listNode.appendChild(innerElement);
+                            document.querySelector('ul').appendChild(listNode);
+                        }
+                    });
+                return false;
+            }
+        </script>
     </body>
 </html>
